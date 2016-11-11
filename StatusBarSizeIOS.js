@@ -73,7 +73,7 @@ var StatusBarSizeIOS = {
     _statusBarSizeHandlers[handler] = StatusBarIOS.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarSizeData) => {
-        handler(statusBarSizeData.height);
+        handler(statusBarSizeData.frame.height);
       }
     );
   },
@@ -99,14 +99,14 @@ var StatusBarSizeIOS = {
 StatusBarIOS.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
-    StatusBarSizeIOS.currentHeight = statusBarData.height;
+    StatusBarSizeIOS.currentHeight = statusBarSizeData.frame.height;
   }
 );
 //Wrap in try catch to avoid error on android
 try {
   RNStatusBarSize.getCurrentStatusBarHeight(
     (statusBarData) => {
-      StatusBarSizeIOS.currentHeight = statusBarData.height;
+      StatusBarSizeIOS.currentHeight = statusBarSizeData.frame.height;
     },
     noop
   );
