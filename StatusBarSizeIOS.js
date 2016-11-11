@@ -72,8 +72,13 @@ var StatusBarSizeIOS = {
   ) {
     _statusBarSizeHandlers[handler] = StatusBarIOS.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
-      (statusBarSizeData) => {
-        handler(statusBarSizeData.frame.height);
+      (statusBarData) => {
+        if (statusBarData.frame) {
+          StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
+        }
+        if (statusBarData.height) {
+          StatusBarSizeIOS.currentHeight = statusBarData.height;
+        }
       }
     );
   },
@@ -99,14 +104,24 @@ var StatusBarSizeIOS = {
 StatusBarIOS.addListener(
   DEVICE_STATUS_BAR_HEIGHT_EVENTS.didChange,
   (statusBarData) => {
-    StatusBarSizeIOS.currentHeight = statusBarSizeData.frame.height;
+    if (statusBarData.frame) {
+      StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
+    }
+    if (statusBarData.height) {
+      StatusBarSizeIOS.currentHeight = statusBarData.height;
+    }
   }
 );
 //Wrap in try catch to avoid error on android
 try {
   RNStatusBarSize.getCurrentStatusBarHeight(
     (statusBarData) => {
-      StatusBarSizeIOS.currentHeight = statusBarSizeData.frame.height;
+      if (statusBarData.frame) {
+        StatusBarSizeIOS.currentHeight = statusBarData.frame.height;
+      }
+      if (statusBarData.height) {
+        StatusBarSizeIOS.currentHeight = statusBarData.height;
+      }
     },
     noop
   );
