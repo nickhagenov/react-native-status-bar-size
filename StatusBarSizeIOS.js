@@ -79,6 +79,7 @@ var StatusBarSizeIOS = {
         if (statusBarData.height) {
           StatusBarSizeIOS.currentHeight = statusBarData.height;
         }
+        handler(StatusBarSizeIOS.currentHeight);
       }
     );
   },
