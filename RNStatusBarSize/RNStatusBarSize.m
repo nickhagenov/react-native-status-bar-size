@@ -5,7 +5,10 @@
 
 static float RNCurrentStatusBarSize()
 {
-  return [[UIApplication sharedApplication] statusBarFrame].size.height;
+  CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+  float height1 = MIN(statusBarSize.width, statusBarSize.height);
+  float height2 = [[UIApplication sharedApplication] statusBarFrame].size.height;
+  return height2;
 }
 
 @implementation RNStatusBarSize
@@ -92,6 +95,9 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(getCurrentStatusBarHeight:(RCTResponseSenderBlock)callback
                   error:(__unused RCTResponseSenderBlock)error)
 {
+  if (_lastKnownHeight == 0) {
+    _lastKnownHeight = RNCurrentStatusBarSize();
+  }
   callback(@[@{@"height": [NSNumber numberWithFloat:_lastKnownHeight]}]);
 }
 
